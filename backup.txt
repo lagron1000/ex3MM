@@ -1,0 +1,41 @@
+#read only data. declaring constant formats.
+.section .rodata
+    format_d:    .string "%d"    #int format
+    format_s:    .string "%s"    #string format
+    size_s:      .long   256     #max size of string
+    size_d:      .long   16      #size for int
+    
+
+.text
+.globl main
+.type main, @function
+main:
+    movq %rsp, %rbp #for correct debugging
+    call run@PLT
+    ret
+    
+        ################################## TODO: CHANGE TO RUN_MAIN BEFORE SUBMITING
+.globl run
+.type run, @function
+run:                        #running main function. makes two pstrings using user input and uses them as per usesrs wish
+    pushq %rbp
+    movq %rsp,%rbp
+    #making space for two ints
+    subq $16, %rsp
+    subq $16, %rsp
+    #making space for two strings
+    subq $256, %rsp
+    subq $256, %rsp
+    movq $format_d, %rdi
+    leaq -16(%rbp), %rsi
+    xorq %rax, %rax
+    call scanf
+    xorq %rax, %rax
+    movq %rbx, -16(%rbp)
+    movq %rbp, %rsp
+    popq %rbp
+    ret
+    
+    
+
+    
